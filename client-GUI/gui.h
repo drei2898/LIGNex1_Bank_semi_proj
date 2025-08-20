@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <conio.h>
 #include "client.h"
 
 extern Client myClient;
