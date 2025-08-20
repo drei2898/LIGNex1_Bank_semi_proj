@@ -18,12 +18,15 @@ public:
 
 class Client {
 private:
-    int clientId;
+    std::string clientId;
     std::string password;
     std::vector<Account> accounts;  
 
 public:
+    Client(std::string id, std::string pwd) : clientId(id), password(pwd) {}
+
     bool login(const std::string& inputPw);
     Account& createAccount();
     std::vector<Account>& getAccounts();
+    std::string getClientId();
 };
