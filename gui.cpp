@@ -6,7 +6,7 @@ void displayTitle(void)
     cout << "\n";
     cout << "   +-------------------------------+\n";
     cout << "   |                               |\n";
-    cout << "   |      ì±„ìš°ì€í–‰ ì¸í„°ë„·ë±…í‚¹      |\n";
+    cout << "   |      Ã¤¿ìÀºÇà ÀÎÅÍ³İ¹ğÅ·      |\n";
     cout << "   |                               |\n";
     cout << "   +-------------------------------+\n";
     cout << "\n";
@@ -15,7 +15,7 @@ void displayTitle(void)
 bool displayHome(void)
 {
     int inputMenu;
-    vector<string> menuName = {"ë¡œê·¸ì¸", "íšŒì›ê°€ì…", "ì¢…ë£Œ"};
+    vector<string> menuName = { "·Î±×ÀÎ", "È¸¿ø°¡ÀÔ", "Á¾·á" };
 
     while (1)
     {
@@ -27,7 +27,7 @@ bool displayHome(void)
             cout << "   " << i + 1 << ". " << menuName[i] << "\n";
         }
 
-        cout << "\në©”ë‰´ ì…ë ¥: ";
+        cout << "\n¸Ş´º ÀÔ·Â: ";
         cin >> inputMenu;
 
         switch (inputMenu)
@@ -35,7 +35,7 @@ bool displayHome(void)
         case 1:
             while (1)
             {
-                if (displayLogin)
+                if (displayLogin())
                 {
                     return true;
                 }
@@ -56,9 +56,9 @@ bool displayLogin(void)
     system("cls");
     displayTitle();
 
-    cout << "   - ì•„ì´ë””: ";
+    cout << "   - ¾ÆÀÌµğ: ";
     cin >> id;
-    cout << "   - íŒ¨ìŠ¤ì›Œë“œ: ";
+    cout << "   - ÆĞ½º¿öµå: ";
     cin >> pw;
 
     return myClient.login(id, pw);
@@ -71,21 +71,21 @@ void displayRegister(void)
     system("cls");
     displayTitle();
 
-    cout << "   - ì´ë¦„: ";
+    cout << "   - ÀÌ¸§: ";
     cin >> name;
-    cout << "   - ì•„ì´ë””: ";
+    cout << "   - ¾ÆÀÌµğ: ";
     cin >> id;
-    cout << "   - íŒ¨ìŠ¤ì›Œë“œ: ";
+    cout << "   - ÆĞ½º¿öµå: ";
     cin >> pw;
 
     myClient.setClient(name, id, pw);
-    //(ì„œë²„ ë³´ë‚´ëŠ” í•¨ìˆ˜)
+    //(¼­¹ö º¸³»´Â ÇÔ¼ö)
 }
 
 void displayMenu(void)
 {
     int inputMenu;
-    vector<string> menuName = {"ê³„ì¢Œ ìƒì„±", "ê³„ì¢Œ ì¡°íšŒ", "ì…ê¸ˆ/ì¶œê¸ˆ", "ì¢…ë£Œ"};
+    vector<string> menuName = { "°èÁÂ »ı¼º", "°èÁÂ Á¶È¸", "ÀÔ±İ/Ãâ±İ", "Á¾·á" };
 
     while (1)
     {
@@ -97,7 +97,7 @@ void displayMenu(void)
             cout << "   " << i + 1 << ". " << menuName[i] << "\n";
         }
 
-        cout << "\në©”ë‰´ ì…ë ¥: ";
+        cout << "\n¸Ş´º ÀÔ·Â: ";
         cin >> inputMenu;
 
         switch (inputMenu)
@@ -126,10 +126,10 @@ void displayCreate(void)
     displayTitle();
 
     myClient.createAccount();
-    //(ì„œë²„ë¡œ ê³„ì¢Œ ë³´ëƒ„)
+    //(¼­¹ö·Î °èÁÂ º¸³¿)
 
-    cout << "   - ì´ë¦„: " << myClient.getClientName() << "\n";
-    cout << "   - ê³„ì¢Œ ì•„ì´ë””: " << myClient.getAccounts().back().getAccountId() << "\n";
+    cout << "   - ÀÌ¸§: " << myClient.getClientName() << "\n";
+    cout << "   - °èÁÂ ¾ÆÀÌµğ: " << myClient.getAccounts().back().getAccountId() << "\n";
 }
 
 void displayCheck(void)
@@ -140,12 +140,12 @@ void displayCheck(void)
     system("cls");
     displayTitle();
 
-    cout << "   - ì´ë¦„: " << name << "\n";
+    cout << "   - ÀÌ¸§: " << name << "\n";
 
     for (auto it : myClient.getAccounts())
     {
-        cout << "   - ê³„ì¢Œ ì•„ì´ë””: " << it.getAccountId() << "\n";
-        cout << "   - ì…ê¸ˆ ê¸ˆì•¡: " << it.getBalance() << "\n";
+        cout << "   - °èÁÂ ¾ÆÀÌµğ: " << it.getAccountId() << "\n";
+        cout << "   - ÀÔ±İ ±İ¾×: " << it.getBalance() << "\n";
     }
 }
 
@@ -157,23 +157,35 @@ void displayDeposit(void)
     system("cls");
     displayTitle();
 
-    cout << "\n* ìš”ì²­: 1. ì…ê¸ˆ 2. ì¶œê¸ˆ\n";
+    cout << "\n* ¿äÃ»: 1. ÀÔ±İ 2. Ãâ±İ\n";
 
-    cout << "   - ì´ë¦„: " << myClient.getClientName() << "\n";
-    cout << "   - ê³„ì¢Œ ì•„ì´ë””: ";
+    cout << "   - ÀÌ¸§: " << myClient.getClientName() << "\n";
+    cout << "   - °èÁÂ ¾ÆÀÌµğ: ";
     cin >> accountId;
-    cout << "   - ì…ê¸ˆ/ì¶œê¸ˆ: ";
+    cout << "   - ÀÔ±İ/Ãâ±İ: ";
     cin >> req;
-    cout << "   - ê¸ˆì•¡: ";
+    cout << "   - ±İ¾×: ";
     cin >> balance;
 
     switch (req)
     {
     case 1:
-        myClient.getAccountById(accountId).deposit(balance);
+        for(auto &it : myClient.getAccounts())
+        {
+            if (it.getAccountId() == accountId)
+            {
+				it.deposit(balance);
+            }
+		}
         break;
     case 2:
-        myClient.getAccountById(accountId).withdraw(balance);
+        for (auto& it : myClient.getAccounts())
+        {
+            if (it.getAccountId() == accountId)
+            {
+                it.withdraw(balance);
+            }
+        }
         break;
     }
 }

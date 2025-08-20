@@ -1,5 +1,7 @@
 #include "client.h"
 
+Client myClient;
+
 void Account::deposit(long long amount)
 {
     balance += amount;

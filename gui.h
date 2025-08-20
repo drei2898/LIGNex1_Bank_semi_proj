@@ -2,7 +2,7 @@
 #include <vector>
 #include "client.h"
 
-Client myClient;
+extern Client myClient;
 
 void displayTitle(void);
 bool displayHome(void);
