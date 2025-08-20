@@ -23,7 +23,10 @@ private:
     std::vector<Account> accounts;  
 
 public:
+    Client(int id, std::string pwd) : clientId(id), password(pwd) {}
+
     bool login(const std::string& inputPw);
     Account& createAccount();
     std::vector<Account>& getAccounts();
+    int getClientId();
 };
