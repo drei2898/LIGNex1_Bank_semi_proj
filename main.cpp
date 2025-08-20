@@ -8,9 +8,9 @@ int main(void)
 {
     bool isLogin = displayHome();
 
-    if (isLogin)
+    if (!isLogin)
     {
-        displayMenu();
+        return 0;
     }
 
     displayMenu();
