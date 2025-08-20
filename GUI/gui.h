@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include "client.h"
+
+Client myClient;
 
 void displayTitle(void);
 bool displayHome(void);

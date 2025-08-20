@@ -61,7 +61,7 @@ bool displayLogin(void)
     cout << "   - 패스워드: ";
     cin >> pw;
 
-    return 함수(id, pw);
+    return myClient.login(id, pw);
 }
 
 void displayRegister(void)
@@ -78,7 +78,8 @@ void displayRegister(void)
     cout << "   - 패스워드: ";
     cin >> pw;
 
-    함수(name, id, pw);
+    myClient.setClient(name, id, pw);
+    //(서버 보내는 함수)
 }
 
 void displayMenu(void)
@@ -118,18 +119,17 @@ void displayMenu(void)
 
 void displayCreate(void)
 {
-    int accountId, balance;
+    int accountId;
     string name;
 
     system("cls");
     displayTitle();
 
-    cout << "   - 이름: " << name << "\n";
-    cout << "   - 계좌 아이디: " << accountId << "\n";
-    cout << "   - 입금 금액: ";
-    cin >> balance;
+    myClient.createAccount();
+    //(서버로 계좌 보냄)
 
-    함수(balance);
+    cout << "   - 이름: " << myClient.getClientName() << "\n";
+    cout << "   - 계좌 아이디: " << myClient.getAccounts().back().getAccountId() << "\n";
 }
 
 void displayCheck(void)
@@ -142,10 +142,10 @@ void displayCheck(void)
 
     cout << "   - 이름: " << name << "\n";
 
-    for (auto it : 클라.계좌)
+    for (auto it : myClient.getAccounts())
     {
-        cout << "   - 계좌 아이디: " << accountId << "\n";
-        cout << "   - 입금 금액: " << balance << "\n";
+        cout << "   - 계좌 아이디: " << it.getAccountId() << "\n";
+        cout << "   - 입금 금액: " << it.getBalance() << "\n";
     }
 }
 
@@ -159,7 +159,7 @@ void displayDeposit(void)
 
     cout << "\n* 요청: 1. 입금 2. 출금\n";
 
-    cout << "   - 이름: " << name << "\n";
+    cout << "   - 이름: " << myClient.getClientName() << "\n";
     cout << "   - 계좌 아이디: ";
     cin >> accountId;
     cout << "   - 입금/출금: ";
@@ -167,5 +167,13 @@ void displayDeposit(void)
     cout << "   - 금액: ";
     cin >> balance;
 
-    return 함수(accountId, req, balance);
+    switch (req)
+    {
+    case 1:
+        myClient.getAccountById(accountId).deposit(balance);
+        break;
+    case 2:
+        myClient.getAccountById(accountId).withdraw(balance);
+        break;
+    }
 }

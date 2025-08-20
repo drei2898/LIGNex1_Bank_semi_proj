@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <vector>
 
-class Account {
+class Account
+{
 private:
     long long balance;
     int accountId;
@@ -16,17 +18,19 @@ public:
     int getAccountId() const;
 };
 
-class Client {
+class Client
+{
 private:
     std::string clientId;
+    std::string clientName;
     std::string password;
-    std::vector<Account> accounts;  
+    std::vector<Account> accounts;
 
 public:
-    Client(std::string id, std::string pwd) : clientId(id), password(pwd) {}
-
-    bool login(const std::string& inputPw);
-    Account& createAccount();
-    std::vector<Account>& getAccounts();
-    std::string getClientId();
+    bool login(const std::string &inputId, const std::string &inputPw);
+    Account &createAccount();
+    std::vector<Account> &getAccounts();
+    Account &getAccountById(int id);
+    std::string getClientName();
+    void setClient(std::string name, std::string id, std::string pw);
 };
