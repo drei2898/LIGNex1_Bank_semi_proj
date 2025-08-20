@@ -1,0 +1,166 @@
+﻿요청(Request)
+{
+  "reqId": "uuid-같은-문자열",
+  "type": "auth|user|account|tx",
+  "action": "login|registerUser|createAccount|getBalance|deposit|withdraw",
+  "auth": { "sessionId": "로그인 후 받은 세션Id (없으면 생략)" },
+  "data": { "필요필드": "..." }
+}
+
+응답(Response)
+{
+  "reqId": "요청과 동일",
+  "ok": true,
+  "code": "OK",
+  "message": "사람이 읽기 좋은 설명",
+  "data": { "응답데이터": "..."}
+}
+
+
+실패 시 예:
+
+{ "reqId":"...", "ok":false, "code":"INVALID_CREDENTIALS", "message":"아이디/비밀번호가 틀렸습니다." }
+
+에러 코드 추천 셋
+
+INVALID_CREDENTIALS, DUPLICATE_USER, ALREADY_HAS_ACCOUNT, ACCOUNT_NOT_FOUND,
+ACCOUNT_PASSWORD_MISMATCH, INSUFFICIENT_FUNDS, BAD_REQUEST, UNAUTHORIZED, INTERNAL_ERROR
+
+2) GUI 흐름별 JSON 예시(문서 연결)
+
+너가 준 화면 흐름(홈/로그인/계정 생성/메뉴/계좌 생성/조회/입출금)에 맞춰 요청/응답 페이로드를 잡았어. (각 화면 목적은 제공한 텍스트와 일치) 
+
+2-1) 회원 가입(“계정 생성” – 아이디/비번 등록)
+
+Request
+
+{
+  "reqId":"1",
+  "type":"user",
+  "action":"registerUser",
+  "data": { "name":"홍길동", "userId":"gildong", "password":"secret1234!" }
+}
+
+
+Response (성공)
+
+{ "reqId":"1", "ok":true, "code":"OK", "message":"계정 생성 완료" }
+
+
+GUI의 1-2 “계정 생성” 화면과 일치. 이름/아이디/비번을 서버에 등록. 
+
+2-2) 로그인
+
+Request
+
+{
+  "reqId":"2",
+  "type":"auth",
+  "action":"login",
+  "data": { "userId":"gildong", "password":"secret1234!" }
+}
+
+
+Response (성공)
+
+{
+  "reqId":"2","ok":true,"code":"OK","message":"로그인 성공",
+  "data": { "sessionId":"abc123", "name":"홍길동" }
+}
+
+
+실패 시 ok:false, code:"INVALID_CREDENTIALS"로.
+
+2-3) 계좌 생성(입출금/ISA 중 1개씩만)
+
+Request
+
+{
+  "reqId":"3",
+  "type":"account",
+  "action":"createAccount",
+  "auth": { "sessionId":"abc123" },
+  "data": {
+    "accountType":"DEMAND",         // "DEMAND"=입출금, "ISA"
+    "accountPassword":"0000",       // 계좌 비밀번호(사용자 비번과 분리)
+    "initialDeposit": 50000
+  }
+}
+
+
+Response (성공)
+
+{
+  "reqId":"3","ok":true,"code":"OK",
+  "data": { "accountId":"A-20250820-0001", "balance":50000 }
+}
+
+
+이미 해당 타입 보유 시 ALREADY_HAS_ACCOUNT. (문서 요구: 형식별 1개만) 
+
+2-4) 계좌 조회
+
+Request
+
+{
+  "reqId":"4",
+  "type":"account",
+  "action":"getBalance",
+  "auth": { "sessionId":"abc123" },
+  "data": {
+    "accountType":"DEMAND",
+    "accountPassword":"0000"
+  }
+}
+
+
+Response
+
+{
+  "reqId":"4","ok":true,"code":"OK",
+  "data": { "name":"홍길동", "accountType":"DEMAND", "balance": 50000 }
+}
+
+
+계좌 없으면 ACCOUNT_NOT_FOUND, 비번 틀리면 ACCOUNT_PASSWORD_MISMATCH. 
+
+2-5) 입금 / 출금
+
+Request (입금)
+
+{
+  "reqId":"5",
+  "type":"tx",
+  "action":"deposit",
+  "auth": { "sessionId":"abc123" },
+  "data": {
+    "accountType":"DEMAND",
+    "accountPassword":"0000",
+    "amount": 10000,
+    "idempotencyKey":"any-unique-string-1"  // 재전송 중복 방지
+  }
+}
+
+
+Request (출금)
+
+{
+  "reqId":"6",
+  "type":"tx",
+  "action":"withdraw",
+  "auth": { "sessionId":"abc123" },
+  "data": {
+    "accountType":"DEMAND",
+    "accountPassword":"0000",
+    "amount": 30000,
+    "idempotencyKey":"any-unique-string-2"
+  }
+}
+
+
+Response (공통 성공)
+
+{
+  "reqId":"5","ok":true,"code":"OK",
+  "data": { "balance": 60000 } // 예: 입금 후 잔액
+}
