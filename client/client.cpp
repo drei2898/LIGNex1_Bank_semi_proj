@@ -23,15 +23,15 @@ bool Client::login(const std::string& inputPw) {
     return false;
 }
 
-int Client::getClientId(){
+std::string Client::getClientId(){
     return clientId;
 }
 
 Account& Client::createAccount(){
-    int newId = clientId * 1000 + accounts.size() + 1;
-    Account newAccount(newId);
+    static int newId = 1;
+    Account newAccount(newId++);
     accounts.push_back(newAccount);
-    return newAccount;
+    return accounts.back();      
 }
 
 std::vector<Account>& Client::getAccounts(){
