@@ -130,6 +130,8 @@ void displayCreate(void)
 
     cout << "   - 이름: " << myClient.getClientName() << "\n";
     cout << "   - 계좌 아이디: " << myClient.getAccounts().back().getAccountId() << "\n";
+
+    _getch();
 }
 
 void displayCheck(void)
@@ -147,6 +149,8 @@ void displayCheck(void)
         cout << "   - 계좌 아이디: " << it.getAccountId() << "\n";
         cout << "   - 입금 금액: " << it.getBalance() << "\n";
     }
+
+    _getch();
 }
 
 void displayDeposit(void)
@@ -188,4 +192,6 @@ void displayDeposit(void)
         }
         break;
     }
+
+    _getch();
 }
